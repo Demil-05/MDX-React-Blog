@@ -5,12 +5,13 @@ import {
 } from 'next/font/google';
 import clsx from 'clsx';
 
-import { LIGHT_TOKENS, DARK_TOKENS, BLOG_TITLE } from '@/constants';
+import { LIGHT_TOKENS, DARK_TOKENS, BLOG_TITLE, COLOR_THEME_COOKIE_NAME } from '@/constants';
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import './styles.css';
 import RespectMotionPreferences from '@/components/RespectMotionPreferences';
+import { cookies } from 'next/headers';
 
 export const metadata = {
   title: BLOG_TITLE,
@@ -30,9 +31,9 @@ const monoFont = Spline_Sans_Mono({
   variable: '--font-family-mono',
 });
 
-function RootLayout({ children }) {
-  // TODO: Dynamic theme depending on user preference
-  const theme = 'light';
+async function RootLayout({ children }) {
+  const savedTheme = (await cookies()).get(COLOR_THEME_COOKIE_NAME)
+  const theme = savedTheme?.value || 'light';
 
   return (
     <RespectMotionPreferences>
@@ -43,7 +44,7 @@ function RootLayout({ children }) {
         style={theme === 'light' ? LIGHT_TOKENS : DARK_TOKENS}
       >
         <body>
-          <Header theme={theme} />
+          <Header initialTheme={theme} />
           <main>{children}</main>
           <Footer />
         </body>

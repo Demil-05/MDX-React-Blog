@@ -37,6 +37,7 @@ function CircularColorsDemo() {
   const index = timeElapsed % COLORS.length
   const selectedColor = COLORS[index];
 
+  const id = React.useId();
   return (
     <Card as="section" className={styles.wrapper}>
       <ul className={styles.colorsWrapper}>
@@ -54,14 +55,7 @@ function CircularColorsDemo() {
                   className={
                     styles.selectedColorOutline
                   }
-                  layout='position'
-                  transition={
-                    {
-                      type: 'spring',
-                      damping: 500,
-                      stiffness: 1000
-                    }
-                  }
+                  layoutId={`${id}-selected-color-outline`}
                 />
               )}
               <div
